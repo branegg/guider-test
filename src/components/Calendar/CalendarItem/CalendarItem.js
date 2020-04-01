@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
+import classNames from 'classnames';
 
-const CalendarItem = ({ dayObject }) => {
+const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
   useEffect(() => {}, []);
 
   const { day, weekdayShort } = dayObject;
@@ -22,7 +23,14 @@ const CalendarItem = ({ dayObject }) => {
   }
 
   return (
-    <div className='Calendar__item'>
+    <div
+      className={classNames({
+        Calendar__item: true,
+        'Calendar__item--available': isAvailable,
+        'Calendar__item--active': isActive
+      })}
+      onClick={() => onClick()}
+    >
       <p className='Calendar__date'>
         {day}
         <span className='Calendar__date--small'>{dateSufix}</span>

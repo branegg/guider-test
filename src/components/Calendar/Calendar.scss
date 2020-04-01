@@ -37,25 +37,52 @@
       color: black;
       border: 2px solid $gray;
       background-color: $gray;
+
+      &:hover {
+        border: 2px solid rgba($purple, 0.3);
+        background-color: rgba($purple, 0.3);
+        cursor: pointer;
+      }
     }
 
     &--active {
       color: $purple;
       border: 2px solid $purple;
+      background-color: $lightGray;
+      .Calendar__date {
+        font-weight: 900;
+
+        &--small {
+          font-weight: 600;
+          margin-left: -1px;
+        }
+      }
+      .Calendar__day {
+        font-weight: 900;
+      }
+
+      &:hover {
+        border: 2px solid $purple;
+        background-color: $lightGray;
+        cursor: pointer;
+      }
     }
   }
   &__date {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
+    transition: all 0.15s ease-in-out;
     &--small {
       font-size: 14px;
       font-weight: 500;
       margin-left: -2px;
+      transition: all 0.15s ease-in-out;
     }
   }
   &__day {
     font-weight: 700;
     font-size: 20px;
+    transition: all 0.15s ease-in-out;
   }
 }
