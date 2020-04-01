@@ -1,17 +1,20 @@
-var { generateOffice365Schedule } = require('./utils/schedule');
-var { now } = require('./utils/dateHelper');
+const { Settings, DateTime } = require('luxon');
+const { generateOffice365Schedule } = require('./utils/schedule');
+const { now } = require('./utils/dateHelper');
 
-var express = require('express');
-var app = express();
-var port = 8080;
+const express = require('express');
+const app = express();
+const port = 8080;
 
 app.get('/availability', function(req, res) {
-  // STEP 1 use a mock response and display on the client
-  const response = generateMockUpResponse();
+  const startDate = DateTime.local()
+    .startOf('week')
+    .toUTC();
+  const endDate = startDate.plus({ week: 1 }).toUTC();
 
-  // STEP 2 generate real data and convert to expected format
-  // const data = generateOffice365Schedule(startDate, endDate)
-  return res.send(response);
+  const data = generateOffice365Schedule(startDate, endDate);
+
+  return res.send(data.value);
 });
 
 function generateMockUpResponse() {

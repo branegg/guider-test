@@ -38,7 +38,7 @@ The UI should look like the one in Availability calendar.png (given the time lim
 
 # Step 2
 
-In `server/index.js instead of using the method generateMockUpResponse use the menthod generateOffice365Schedule passing this week start and end date and tranform the response in the format described above.
+In `server/index.js instead of using the method generateMockUpResponse use the menthod generateOffice365Schedule passing this week start and end date and transform the response in the format described above.
 
 **Business rules:**
 
