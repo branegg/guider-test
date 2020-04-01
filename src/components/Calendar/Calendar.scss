@@ -1,0 +1,61 @@
+@import './../../constants/colors.scss';
+
+.Calendar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0;
+
+  &__header {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__item {
+    width: 120px;
+    height: 80px;
+    border-radius: 5px;
+    border: 2px solid $lightGray;
+    background-color: $lightGray;
+    transition: all 0.15s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $fontGray;
+    margin: 0 2px;
+
+    &--available {
+      color: black;
+      border: 2px solid $gray;
+      background-color: $gray;
+    }
+
+    &--active {
+      color: $purple;
+      border: 2px solid $purple;
+    }
+  }
+  &__date {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    &--small {
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: -2px;
+    }
+  }
+  &__day {
+    font-weight: 700;
+    font-size: 20px;
+  }
+}
