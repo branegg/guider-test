@@ -72,14 +72,14 @@ const Calendar = () => {
 
   const renderLoadingSpinner = () => (
     <div className='Calendar__loading'>
-      <img className='Calendar__spinner' src={loadingSpinner} />
+      <img className='Calendar__spinner' src={loadingSpinner} alt='Loading...' />
     </div>
   );
 
   const handleDateClick = key => {
     const activeDate = week.filter(day => day.ts === key).toLocaleString();
     setActiveDate(key);
-    const availableSlots = availability.filter(date => date.date == activeDate)[0].availableSlots;
+    const availableSlots = availability.filter(date => date.date === activeDate)[0].availableSlots;
     setAvailableHours(availableSlots.map(slot => slot.startTime));
   };
 

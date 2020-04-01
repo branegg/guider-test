@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { DateTime } from 'luxon';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
 const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
@@ -20,6 +19,8 @@ const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
     case '3':
       dateSufix = 'rd';
       break;
+    default:
+      return true;
   }
 
   return (
