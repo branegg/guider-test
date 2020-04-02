@@ -9,6 +9,9 @@ const App = () => {
     <Router>
       <div className='App'>
         <Switch>
+          <Route path='/'>
+            <Calendar />
+          </Route>
           <Route path='/calendar'>
             <Calendar />
           </Route>

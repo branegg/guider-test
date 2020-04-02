@@ -10,6 +10,7 @@ const Calendar = () => {
   const [week, setWeek] = useState([]);
   const [availability, setAvailability] = useState([]);
   const [activeDate, setActiveDate] = useState();
+  const [hours, setHours] = useState([]);
   const [availableHours, setAvailableHours] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -25,58 +26,61 @@ const Calendar = () => {
       );
     }
     setWeek(currentWeek);
+    // console.log(currentWeek);
 
     fetch('/availability')
       .then(res => res.json())
       .then(res => {
         const workingHours = res[0].workingHours;
-        const dayStart = DateTime.fromISO(workingHours.startTime).hour;
-        const dayEnd = DateTime.fromISO(workingHours.endTime).hour;
+        const dayStart = DateTime.fromISO(workingHours.startTime).toLocaleString(DateTime.TIME_24_SIMPLE);
+        const dayEnd = DateTime.fromISO(workingHours.endTime).toLocaleString(DateTime.TIME_24_SIMPLE);
+        const scheduleItems = res[0].scheduleItems;
+        const dates = scheduleItems.map(item => DateTime.fromISO(item.start.dateTime).toLocaleString());
+        const uniqueDates = [...new Set(dates)];
 
         let hours = [];
 
-        for (let i = dayStart; i <= dayEnd; i++) {
+        for (
+          let i = dayStart;
+          i !== dayEnd;
+          i = DateTime.fromISO(i)
+            .plus({ hours: 1 })
+            .toLocaleString(DateTime.TIME_24_SIMPLE)
+        ) {
           hours.push(i);
         }
 
-        console.log(hours);
+        setHours(hours);
 
-        const scheduleItems = res[0].scheduleItems;
-        const resArray = scheduleItems.map(item => DateTime.fromISO(item.start.dateTime).toLocaleString());
-        const uniqArray = [...new Set(resArray)];
-
-        // let availableSlots = hours.map(hour => {
-        //   return {
-        //     startTime: hour,
-        //     endTime: hour + 1
-        //   };
-        // }).filter(hour => hour.start);
-
-        // console.log(availableSlots);
-
-        let resObj = uniqArray.map(date => {
+        let availableSlots = hours.map(hour => {
           return {
-            date,
-            availableSlots: [
-              { startTime: '15:00', endTime: '16:00' },
-              { startTime: '16:00', endTime: '17:00' }
-            ]
+            startTime: hour,
+            endTime: DateTime.fromISO(hour)
+              .plus({ hours: 1 })
+              .toLocaleString(DateTime.TIME_24_SIMPLE)
           };
         });
 
-        console.log(scheduleItems);
-
-        scheduleItems.map(item => {
-          const date = DateTime.fromISO(item.start.dateTime).toLocaleString();
-
-          const startTime = DateTime.fromISO(item.start.dateTime);
-          const endTime = DateTime.fromISO(item.end.dateTime);
-
-          const itemDiff = endTime.diff(startTime, 'hours').toObject().hours;
+        let resObj = uniqueDates.map(date => {
+          return {
+            date,
+            availableSlots
+          };
         });
 
-        return false;
-        setAvailability(res);
+        const scheduleItemsSorted = scheduleItems.map(item => {
+          const date = DateTime.fromISO(item.start.dateTime).toLocaleString();
+
+          const startTime = DateTime.fromISO(item.start.dateTime).toLocaleString(DateTime.TIME_24_SIMPLE);
+          const endTime = DateTime.fromISO(item.end.dateTime).toLocaleString(DateTime.TIME_24_SIMPLE);
+
+          return { date, startTime, endTime };
+        });
+
+        console.log(scheduleItemsSorted);
+
+        // return false;
+        setAvailability(resObj);
         setIsLoading(false);
       });
   }, []);
@@ -95,15 +99,15 @@ const Calendar = () => {
       );
     });
 
-  // const renderHours = () =>
-  //   hours.map((hour, index) => (
-  //     <p
-  //       key={index}
-  //       className={classNames({ Calendar__hour: true, 'Calendar__hour--active': availableHours.includes(hour) })}
-  //     >
-  //       {hour}
-  //     </p>
-  //   ));
+  const renderHours = () =>
+    hours.map((hour, index) => (
+      <p
+        key={index}
+        className={classNames({ Calendar__hour: true, 'Calendar__hour--active': availableHours.includes(hour) })}
+      >
+        {hour}
+      </p>
+    ));
 
   const renderLoadingSpinner = () => (
     <div className='Calendar__loading'>
@@ -123,7 +127,7 @@ const Calendar = () => {
       {isLoading && renderLoadingSpinner()}
       <h2 className='Calendar__header'>Your timezone: {DateTime.local().zoneName}</h2>
       <section className='Calendar__wrapper'>{renderDays()}</section>
-      {/* <section className='Calendar__hours'>{renderHours()}</section> */}
+      <section className='Calendar__hours'>{renderHours()}</section>
     </div>
   );
 };
