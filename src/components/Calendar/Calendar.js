@@ -1,4 +1,4 @@
-import './Calendar.css';
+import './Calendar.scss';
 import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import CalendarItem from './CalendarItem/CalendarItem';
@@ -68,7 +68,7 @@ const Calendar = () => {
           return { date, startTime, endTime };
         });
 
-        scheduleItemsSorted.map((event) => {
+        scheduleItemsSorted.forEach((event) => {
           const { date, startTime, endTime } = event;
           const eventStartTime = startTime.toLocaleString(DateTime.TIME_24_SIMPLE);
           let eventEndTime = endTime.toLocaleString(DateTime.TIME_24_SIMPLE);
