@@ -76,10 +76,13 @@ const Calendar = () => {
           const day = resObj.filter((day) => day.date === date)[0];
 
           day.availableSlots.forEach((slot, index) => {
-            if (
-              (eventStartTime >= slot.startTime && eventStartTime < slot.endTime) ||
-              (eventEndTime > slot.startTime && eventEndTime <= slot.endTime)
-            ) {
+            if (eventStartTime >= slot.startTime && eventStartTime < slot.endTime) {
+              const eventLength = endTime.diff(startTime, 'hours').hours;
+              const splicedSlotsNumber = Math.ceil(eventLength);
+
+              day.availableSlots.splice(index, splicedSlotsNumber);
+            }
+            if (eventEndTime > slot.startTime && eventEndTime <= slot.endTime) {
               day.availableSlots.splice(index, 1);
             }
           });
