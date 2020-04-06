@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
-  useEffect(() => {}, []);
-
   const { day, weekdayShort } = dayObject;
   const dayLength = day.toString().length;
   const lastDayChar = day.toString()[dayLength - 1];
@@ -20,7 +18,7 @@ const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
       dateSufix = 'rd';
       break;
     default:
-      return true;
+      break;
   }
 
   return (
@@ -28,7 +26,7 @@ const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
       className={classNames({
         Calendar__item: true,
         'Calendar__item--available': isAvailable,
-        'Calendar__item--active': isActive
+        'Calendar__item--active': isActive,
       })}
       onClick={() => onClick()}
     >

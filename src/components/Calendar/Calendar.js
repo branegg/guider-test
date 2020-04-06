@@ -14,28 +14,23 @@ const Calendar = () => {
   const [availableHours, setAvailableHours] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const availableDates = availability && availability.map(date => date.date);
+  const availableDates = availability && availability.map((date) => date.date);
 
   useEffect(() => {
     let currentWeek = [];
     for (let i = 0; i <= 6; i++) {
-      currentWeek.push(
-        DateTime.local()
-          .startOf('week')
-          .plus({ days: i })
-      );
+      currentWeek.push(DateTime.local().startOf('week').plus({ days: i }));
     }
     setWeek(currentWeek);
-    // console.log(currentWeek);
 
     fetch('/availability')
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         const workingHours = res[0].workingHours;
         const dayStart = DateTime.fromISO(workingHours.startTime).toLocaleString(DateTime.TIME_24_SIMPLE);
         const dayEnd = DateTime.fromISO(workingHours.endTime).toLocaleString(DateTime.TIME_24_SIMPLE);
         const scheduleItems = res[0].scheduleItems;
-        const dates = scheduleItems.map(item => DateTime.fromISO(item.start.dateTime).toLocaleString());
+        const dates = scheduleItems.map((item) => DateTime.fromISO(item.start.dateTime).toLocaleString());
         const uniqueDates = [...new Set(dates)];
 
         let hours = [];
@@ -43,50 +38,60 @@ const Calendar = () => {
         for (
           let i = dayStart;
           i !== dayEnd;
-          i = DateTime.fromISO(i)
-            .plus({ hours: 1 })
-            .toLocaleString(DateTime.TIME_24_SIMPLE)
+          i = DateTime.fromISO(i).plus({ hours: 1 }).toLocaleString(DateTime.TIME_24_SIMPLE)
         ) {
           hours.push(i);
         }
 
         setHours(hours);
 
-        let availableSlots = hours.map(hour => {
+        let availableSlots = hours.map((hour) => {
           return {
             startTime: hour,
-            endTime: DateTime.fromISO(hour)
-              .plus({ hours: 1 })
-              .toLocaleString(DateTime.TIME_24_SIMPLE)
+            endTime: DateTime.fromISO(hour).plus({ hours: 1 }).toLocaleString(DateTime.TIME_24_SIMPLE),
           };
         });
 
-        let resObj = uniqueDates.map(date => {
+        let resObj = uniqueDates.map((date) => {
           return {
             date,
-            availableSlots
+            availableSlots,
           };
         });
 
-        const scheduleItemsSorted = scheduleItems.map(item => {
+        const scheduleItemsSorted = scheduleItems.map((item) => {
           const date = DateTime.fromISO(item.start.dateTime).toLocaleString();
 
-          const startTime = DateTime.fromISO(item.start.dateTime).toLocaleString(DateTime.TIME_24_SIMPLE);
-          const endTime = DateTime.fromISO(item.end.dateTime).toLocaleString(DateTime.TIME_24_SIMPLE);
+          const startTime = DateTime.fromISO(item.start.dateTime);
+          const endTime = DateTime.fromISO(item.end.dateTime);
 
           return { date, startTime, endTime };
         });
 
-        console.log(scheduleItemsSorted);
+        scheduleItemsSorted.map((event) => {
+          const { date, startTime, endTime } = event;
+          const eventStartTime = startTime.toLocaleString(DateTime.TIME_24_SIMPLE);
+          let eventEndTime = endTime.toLocaleString(DateTime.TIME_24_SIMPLE);
 
-        // return false;
+          const day = resObj.filter((day) => day.date === date)[0];
+
+          day.availableSlots.forEach((slot, index) => {
+            if (
+              (eventStartTime >= slot.startTime && eventStartTime < slot.endTime) ||
+              (eventEndTime > slot.startTime && eventEndTime <= slot.endTime)
+            ) {
+              day.availableSlots.splice(index, 1);
+            }
+          });
+        });
+
         setAvailability(resObj);
         setIsLoading(false);
       });
   }, []);
 
-  const renderDays = () =>
-    week.map(day => {
+  const renderDays = () => {
+    return week.map((day) => {
       const isAvailable = availableDates.includes(day.toLocaleString());
       return (
         <CalendarItem
@@ -98,6 +103,7 @@ const Calendar = () => {
         />
       );
     });
+  };
 
   const renderHours = () =>
     hours.map((hour, index) => (
@@ -115,11 +121,11 @@ const Calendar = () => {
     </div>
   );
 
-  const handleDateClick = key => {
-    const activeDate = week.filter(day => day.ts === key).toLocaleString();
+  const handleDateClick = (key) => {
+    const activeDate = week.filter((day) => day.ts === key).toLocaleString();
     setActiveDate(key);
-    const availableSlots = availability.filter(date => date.date === activeDate)[0].availableSlots;
-    setAvailableHours(availableSlots.map(slot => slot.startTime));
+    const availableSlots = availability.filter((date) => date.date === activeDate)[0].availableSlots;
+    setAvailableHours(availableSlots.map((slot) => slot.startTime));
   };
 
   return (

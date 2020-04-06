@@ -6,11 +6,9 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
-app.get('/availability', function(req, res) {
-  const startDate = DateTime.local()
-    .startOf('week')
-    .toUTC();
-  const endDate = startDate.plus({ week: 1 }).toUTC();
+app.get('/availability', function (req, res) {
+  const startDate = DateTime.local().startOf('week').toUTC();
+  const endDate = startDate.plus({ days: 6 }).toUTC();
 
   const data = generateOffice365Schedule(startDate, endDate);
 
@@ -26,16 +24,16 @@ function generateMockUpResponse() {
       date: d1.toFormat('dd/MM/yyyy'),
       availableSlots: [
         { startTime: '9:00', endTime: '10:00' },
-        { startTime: '10:00', endTime: '11:00' }
-      ]
+        { startTime: '10:00', endTime: '11:00' },
+      ],
     },
     {
       date: d2.toFormat('dd/MM/yyyy'),
       availableSlots: [
         { startTime: '15:00', endTime: '16:00' },
-        { startTime: '16:00', endTime: '17:00' }
-      ]
-    }
+        { startTime: '16:00', endTime: '17:00' },
+      ],
+    },
   ];
 }
 
