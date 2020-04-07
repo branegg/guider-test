@@ -1,6 +1,6 @@
 import './App.scss';
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Calendar from './components/Calendar/Calendar';
 
@@ -9,8 +9,10 @@ const App = () => {
     <Router>
       <div className='App'>
         <Switch>
-          <Route path='/'>
-            <Calendar />
+          <Route path='/' exact>
+            <Link className='App__link' to='/calendar'>
+              {`--> Calendar <--`}
+            </Link>
           </Route>
           <Route path='/calendar'>
             <Calendar />

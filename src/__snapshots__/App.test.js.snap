@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App matches snapshot 1`] = `
+<div
+  className="App"
+>
+  <a
+    className="App__link"
+    href="/calendar"
+    onClick={[Function]}
+  >
+    --&gt; Calendar &lt;--
+  </a>
+</div>
+`;

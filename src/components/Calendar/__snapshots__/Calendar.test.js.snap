@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Calendar matches snapshot 1`] = `
+<div
+  className="Calendar"
+>
+  <div
+    className="Calendar__loading"
+  >
+    <img
+      alt="Loading..."
+      className="Calendar__spinner"
+      src="loading.gif"
+    />
+  </div>
+  <h2
+    className="Calendar__header"
+  >
+    Your timezone: 
+    Europe/London
+  </h2>
+  <section
+    className="Calendar__wrapper"
+  />
+  <section
+    className="Calendar__hours"
+  />
+</div>
+`;
