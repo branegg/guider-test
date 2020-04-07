@@ -23,6 +23,7 @@ const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
 
   return (
     <div
+      data-testid='calendar-item'
       className={classNames({
         Calendar__item: true,
         'Calendar__item--available': isAvailable,
@@ -32,9 +33,13 @@ const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
     >
       <p className='Calendar__date'>
         {day}
-        <span className='Calendar__date--small'>{dateSufix}</span>
+        <span data-testid='date-sufix' className='Calendar__date--small'>
+          {dateSufix}
+        </span>
       </p>
-      <p className='Calendar__day'>{weekdayShort}</p>
+      <p data-testid='calendar-day' className='Calendar__day'>
+        {weekdayShort}
+      </p>
     </div>
   );
 };
