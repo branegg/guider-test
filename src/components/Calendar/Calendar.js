@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import CalendarItem from './CalendarItem/CalendarItem';
 import classNames from 'classnames';
+import axios from 'axios';
 
 import loadingSpinner from './../../assets/images/loading.gif';
 
@@ -17,12 +18,27 @@ const Calendar = () => {
   const availableDates = availability && availability.map((date) => date.date);
 
   useEffect(() => {
+    prepareWeek();
+    prepareHours();
+    fetchAvailability();
+  }, []);
+
+  const fetchAvailability = async () => {
+    const response = await axios.get('/availability');
+    const data = response.data;
+    setAvailability(data);
+    setIsLoading(false);
+  };
+
+  const prepareWeek = () => {
     let currentWeek = [];
     for (let i = 0; i <= 6; i++) {
       currentWeek.push(DateTime.local().startOf('week').plus({ days: i }));
     }
     setWeek(currentWeek);
+  };
 
+  const prepareHours = () => {
     const dayStart = '08:00';
     const dayEnd = '17:00';
     let hours = [];
@@ -36,18 +52,11 @@ const Calendar = () => {
     }
 
     setHours(hours);
-
-    fetch('/availability')
-      .then((res) => res.json())
-      .then((res) => {
-        setAvailability(res);
-        setIsLoading(false);
-      });
-  }, []);
+  };
 
   const renderDays = () => {
     return week.map((day) => {
-      const isAvailable = availableDates.includes(day.toLocaleString());
+      const isAvailable = availableDates.includes(day.toFormat('dd/MM/yyyy'));
       return (
         <CalendarItem
           key={day.ts}
@@ -63,6 +72,7 @@ const Calendar = () => {
   const renderHours = () =>
     hours.map((hour, index) => (
       <p
+        data-testid='calendar-hour'
         key={index}
         className={classNames({ Calendar__hour: true, 'Calendar__hour--active': availableHours.includes(hour) })}
       >
@@ -77,7 +87,7 @@ const Calendar = () => {
   );
 
   const handleDateClick = (key) => {
-    const activeDate = week.filter((day) => day.ts === key).toLocaleString();
+    const activeDate = week.filter((day) => day.ts === key)[0].toFormat('dd/MM/yyyy');
     setActiveDate(key);
     const availableSlots = availability.filter((date) => date.date === activeDate)[0].availableSlots;
     setAvailableHours(availableSlots.map((slot) => slot.startTime));
@@ -87,7 +97,9 @@ const Calendar = () => {
     <div className='Calendar'>
       {isLoading && renderLoadingSpinner()}
       <h2 className='Calendar__header'>Your timezone: {DateTime.local().zoneName}</h2>
-      <section className='Calendar__wrapper'>{renderDays()}</section>
+      <section className='Calendar__wrapper' data-testid='calendar-wrapper'>
+        {renderDays()}
+      </section>
       <section className='Calendar__hours'>{renderHours()}</section>
     </div>
   );

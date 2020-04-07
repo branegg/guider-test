@@ -4,6 +4,7 @@ exports[`CalendarItem matches snapshot 1`] = `
 <div
   className="Calendar__item"
   data-testid="calendar-item"
+  label="Tuesday"
   onClick={[Function]}
 >
   <p

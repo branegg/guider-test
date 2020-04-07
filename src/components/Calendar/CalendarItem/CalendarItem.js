@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
-  const { day, weekdayShort } = dayObject;
+  const { day, weekdayLong, weekdayShort } = dayObject;
   const dayLength = day.toString().length;
   const lastDayChar = day.toString()[dayLength - 1];
   let dateSufix = 'th';
@@ -23,6 +23,7 @@ const CalendarItem = ({ dayObject, isAvailable, onClick, isActive }) => {
 
   return (
     <div
+      label={weekdayLong}
       data-testid='calendar-item'
       className={classNames({
         Calendar__item: true,

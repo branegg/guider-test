@@ -1,4 +1,4 @@
-const { Settings, DateTime } = require('luxon');
+const { DateTime } = require('luxon');
 const { generateOffice365Schedule } = require('./utils/schedule');
 const { now } = require('./utils/dateHelper');
 
