@@ -1,0 +1,25 @@
+module.js:550
+    throw err;
+    ^
+
+Error: Cannot find module '/Users/simonecasciaroli/Workspace/guider-test-filip/server.js'
+    at Function.Module._resolveFilename (module.js:548:15)
+    at Function.Module._load (module.js:475:25)
+    at Function.Module.runMain (module.js:694:10)
+    at startup (bootstrap_node.js:204:16)
+    at bootstrap_node.js:625:3
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE :::8080
+    at Server.setupListenHandle [as _listen2] (net.js:1360:14)
+    at listenInCluster (net.js:1401:12)
+    at Server.listen (net.js:1485:7)
+    at Function.listen (/Users/simonecasciaroli/Workspace/guider-test-filip/node_modules/express/lib/application.js:618:24)
+    at Object.<anonymous> (/Users/simonecasciaroli/Workspace/guider-test-filip/server/index.js:40:5)
+    at Module._compile (module.js:653:30)
+    at Object.Module._extensions..js (module.js:664:10)
+    at Module.load (module.js:566:32)
+    at tryModuleLoad (module.js:506:12)
+    at Function.Module._load (module.js:498:3)
