@@ -4,13 +4,13 @@ exports[`CalendarItem matches snapshot 1`] = `
 <div
   className="Calendar__item"
   data-testid="calendar-item"
-  label="Tuesday"
+  label="Wednesday"
   onClick={[Function]}
 >
   <p
     className="Calendar__date"
   >
-    7
+    8
     <span
       className="Calendar__date--small"
       data-testid="date-sufix"
@@ -22,7 +22,7 @@ exports[`CalendarItem matches snapshot 1`] = `
     className="Calendar__day"
     data-testid="calendar-day"
   >
-    Tue
+    Wed
   </p>
 </div>
 `;

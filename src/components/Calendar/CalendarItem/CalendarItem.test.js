@@ -24,22 +24,22 @@ describe('CalendarItem', () => {
   });
 
   it('was clicked', (done) => {
-    props.onClick = done;
-    const { getByTestId } = render(<CalendarItem {...props} />);
+    const innerProps = { ...props, onClick: done, dayObject: DateTime.fromFormat('01/04/2020', 'dd/MM/yyyy') };
+    const { getByTestId } = render(<CalendarItem {...innerProps} />);
     const calendarItem = getByTestId('calendar-item');
     fireEvent.click(calendarItem);
   });
 
   it('has available class', () => {
-    props.isAvailable = true;
-    const { getByTestId } = render(<CalendarItem {...props} />);
+    const innerProps = { ...props, isAvailable: true, dayObject: DateTime.fromFormat('02/04/2020', 'dd/MM/yyyy') };
+    const { getByTestId } = render(<CalendarItem {...innerProps} />);
     const calendarItem = getByTestId('calendar-item');
     expect(calendarItem).toHaveClass('Calendar__item--available');
   });
 
   it('has active class', () => {
-    props.isActive = true;
-    const { getByTestId } = render(<CalendarItem {...props} />);
+    const innerProps = { ...props, isActive: true, dayObject: DateTime.fromFormat('03/04/2020', 'dd/MM/yyyy') };
+    const { getByTestId } = render(<CalendarItem {...innerProps} />);
     const calendarItem = getByTestId('calendar-item');
     expect(calendarItem).toHaveClass('Calendar__item--active');
   });
